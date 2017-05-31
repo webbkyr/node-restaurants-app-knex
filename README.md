@@ -9,7 +9,7 @@ Examples:
 Simplest. Good for development
 E.g. 'dev-restaurants-app
 
-  ```json
+  ```js
   {
     client: 'pg',
     connection: {
@@ -21,7 +21,7 @@ E.g. 'dev-restaurants-app
 2) SERVER and DATABASE name in a connection string (good for development and environment variables)
 E.g. 'postgresql://localhost/dev-restaurants-app'
 
-```json
+```js
 {
   client: 'pg',
   connection: 'postgresql://<SERVER>/<DATABASE>' 
@@ -34,7 +34,7 @@ E.g:
   - ElephantSQL: 'postgres://iipldsligr:WfGNrE2xK3FQDW7@stampy.db.elephantsql.com:5432/iipldsligr'
   - localhostDB: 'postgres://username:password@localhost:5432/database'
 
-```json
+```js
 {
   client: 'pg',
   connection: 'postgresql://<USERNAME>:<PASSWORD@<SERVER>/<DATABASE>' 
@@ -44,7 +44,7 @@ E.g:
 4) USERNAME, PASSWORD, SERVER and DATABASE in an object
 Versitile, can be used for deployment when used with env vars but not as convenient as a string
 
-```json
+```js
 {
   client: 'pg',
   connection: {
