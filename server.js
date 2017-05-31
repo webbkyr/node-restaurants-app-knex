@@ -1,8 +1,9 @@
+'use strict';
+
 const express = require('express');
 const bodyParser = require('body-parser');
 
 const { DATABASE, PORT } = require('./config');
-
 const knex = require('knex')(DATABASE);
 
 const app = express();

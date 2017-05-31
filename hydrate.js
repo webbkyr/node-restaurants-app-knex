@@ -1,11 +1,10 @@
-// clear the console before each run
-process.stdout.write('\033c');
+'use strict';
 
-const knex = require('knex')({
-  client: 'pg',
-  connection: 'postgresql://dev:dev@localhost/dev-restaurants-app',
-  debug: false
-});
+const { DATABASE, PORT } = require('./config');
+const knex = require('knex')(DATABASE);
+
+// clear the console before each run
+console.log('\x1b\c');
 
 knex.select('restaurants.id', 'name', 'cuisine', 'borough', 'grades.id as gradeId', 'grade', 'score')
   .from('restaurants')
@@ -32,11 +31,18 @@ knex.select('restaurants.id', 'name', 'cuisine', 'borough', 'grades.id as gradeI
       });
     });
     console.log(JSON.stringify(hydrated, null, 2));
+  });
 
+knex.select('restaurants.id', 'name', 'cuisine', 'borough', 'grades.id as gradeId', 'grade', 'score')
+  .from('restaurants')
+  .innerJoin('grades', 'restaurants.id', 'grades.restaurant_id')
+  .orderBy('date', 'asc')
+  .limit(10)
+  .then(results => {
+    
     // sophisticated approach
-    const raw_data = people;
-    const results = [], lookup = {};
-    for (let thing of raw_data) {
+    const hydrated = [], lookup = {};
+    for (let thing of results) {
       if (!lookup[thing.id]) {
         lookup[thing.id] = {
           id: thing.id,
@@ -44,7 +50,7 @@ knex.select('restaurants.id', 'name', 'cuisine', 'borough', 'grades.id as gradeI
           age: thing.age,
           pets: []
         };
-        results.push(lookup[thing.id]);
+        hydrated.push(lookup[thing.id]);
       }
 
       lookup[thing.id].pets.push({
@@ -52,11 +58,10 @@ knex.select('restaurants.id', 'name', 'cuisine', 'borough', 'grades.id as gradeI
         petType: thing.petType
       });
     }
-    console.log(JSON.stringify(results, null, 2))
-
-
+    console.log(JSON.stringify(hydrated, null, 2));
+    
   });
 
 
 // Destroy the connection pool
-knex.destroy().then(() => { console.log('closed') })
+knex.destroy().then(() => { console.log('closed'); });
