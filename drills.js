@@ -21,7 +21,7 @@ knex
   .from('restaurants')
   .then(results => console.log(JSON.stringify(results, null, 2)));
 
-//2: get Italin restaurants
+//2: get Italian restaurants
 knex
   .select()
   .from('restaurants')
