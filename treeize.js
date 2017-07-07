@@ -1,4 +1,5 @@
 'use strict';
+
 const { DATABASE } = require('./config');
 const knex = require('knex')(DATABASE);
 
@@ -7,6 +8,8 @@ process.stdout.write('\x1Bc');
 
 const Treeize = require('treeize');
 const restaurants = new Treeize();
+
+/** Note the use of SQL alias like `cuisine as details:cuisine` and `grades.id as grades:id` */
 
 knex.select('restaurants.id', 'name', 'cuisine as details:cuisine', 'borough as details:borough', 'grades.id as grades:id', 'grade as grades:grade', 'score as grades:score')
   .from('restaurants')

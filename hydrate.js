@@ -1,4 +1,5 @@
 'use strict';
+
 const { DATABASE } = require('./config');
 const knex = require('knex')(DATABASE);
 
@@ -7,8 +8,8 @@ process.stdout.write('\x1Bc');
 
 /*******************
  * Note, there are 2 solutions presented
- * - A 'naive' solution
- * - A 'sophisticated' solution
+ * - A "naive" solution
+ * - A "sophisticated" solution
  *******************/
 
 // #1 Naive Solution
@@ -38,7 +39,7 @@ knex.select('restaurants.id', 'name', 'cuisine', 'borough', 'grades.id as gradeI
     console.log(JSON.stringify(hydrated, null, 2));
   });
 
-// #2 Sophistacted Solution
+// #2 Sophisticated Solution
 knex.select('restaurants.id', 'name', 'cuisine', 'borough', 'grades.id as gradeId', 'grade', 'score')
   .from('restaurants')
   .innerJoin('grades', 'restaurants.id', 'grades.restaurant_id')
