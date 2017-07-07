@@ -77,7 +77,4 @@ app.post('/restaurants/', (req, res) => {
     });
 });
 
-
-
-
 app.listen(PORT);
