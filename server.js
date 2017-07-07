@@ -48,32 +48,43 @@ app.get('/restaurants/:id', (req, res) => {
 //Dehydrate
 app.post('/restaurants/', (req, res) => {
 
-  // Sanitize data before inserting!
-  let restaurant_id;
-  knex
-    .into('restaurants')
+  const required = ['name', 'cuisine', 'borough', 'grades'];
+
+  required.forEach(requiredField => {
+    if (!(requiredField in req.body)) {
+      const errorMessage = `You're missing a required field: ${requiredField}`;
+      console.error(errorMessage);
+      res.status(400).end();
+      return;
+    }
+  });
+
+  knex('restaurants')
+    .returning('id')
     .insert({
       name: req.body.name,
       cuisine: req.body.cuisine,
-      borough: req.body.borough
+      borough: req.body.borough,
     })
-    .returning('id')
-    .then(result => {
-      restaurant_id = result[0];
-      const gradesToPost = req.body.grades.map(grade => {
-        return {
-          restaurant_id: restaurant_id,
-          grade: grade.grade,
-          score: grade.score
-        };
+    .then(id => {    
+      let promises = [];
+      req.body.grades.forEach(grade => {
+        knex('grades')
+          .insert({
+            restaurant_id: id[0],
+            grade: grade.grade,
+            score: grade.score,
+            date: knex.fn.now()
+          })
+          .then(promise => promises.push(promise));
       });
-
-      return knex
-        .insert(gradesToPost)
-        .into('grades');
-    })
-    .then(() => {
-      res.location(`/restaurants/${restaurant_id}`).sendStatus(201);
+      Promise.all(promises)
+        .then(() => {
+          res.location(`/restaurants/${id}`).sendStatus(201);
+        })
+        .catch(err => {
+          console.error(err);
+        });
     });
 });
 
