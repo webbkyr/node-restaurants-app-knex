@@ -1,11 +1,12 @@
 {
   "name": "node-restaurants-knex",
   "version": "1.0.0",
-  "description": "Knex and Postgres Exercise",
+  "description": "",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "mocha"
+    "test": "mocha",
+    "dev": "nodemon drills.js"
   },
   "keywords": [],
   "author": "",
@@ -14,20 +15,10 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "knex": "^0.12.9",
-    "morgan": "^1.7.0",
     "pg": "^6.1.5",
     "treeize": "^2.0.2"
   },
   "devDependencies": {
-    "dotenv": "^4.0.0",
     "nodemon": "^1.11.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cklanac/node-restaurants-app-knex.git"
-  },
-  "bugs": {
-    "url": "https://github.com/cklanac/node-restaurants-app-knex/issues"
-  },
-  "homepage": "https://github.com/cklanac/node-restaurants-app-knex#readme"
+  }
 }

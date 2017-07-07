@@ -1,11 +1,17 @@
 'use strict';
-
-const { DATABASE, PORT } = require('./config');
+const { DATABASE } = require('./config');
 const knex = require('knex')(DATABASE);
 
 // clear the console before each run
-console.log('\x1b\c');
+process.stdout.write('\x1Bc');
 
+/*******************
+ * Note, there are 2 solutions presented
+ * - A 'naive' solution
+ * - A 'sophisticated' solution
+ *******************/
+
+// #1 Naive Solution
 knex.select('restaurants.id', 'name', 'cuisine', 'borough', 'grades.id as gradeId', 'grade', 'score')
   .from('restaurants')
   .innerJoin('grades', 'restaurants.id', 'grades.restaurant_id')
@@ -13,7 +19,6 @@ knex.select('restaurants.id', 'name', 'cuisine', 'borough', 'grades.id as gradeI
   .limit(10)
   .then(results => {
 
-    // naive approach
     const hydrated = {};
     results.forEach(row => {
       if (!(row.id in hydrated)) {
@@ -33,6 +38,7 @@ knex.select('restaurants.id', 'name', 'cuisine', 'borough', 'grades.id as gradeI
     console.log(JSON.stringify(hydrated, null, 2));
   });
 
+// #2 Sophistacted Solution
 knex.select('restaurants.id', 'name', 'cuisine', 'borough', 'grades.id as gradeId', 'grade', 'score')
   .from('restaurants')
   .innerJoin('grades', 'restaurants.id', 'grades.restaurant_id')
@@ -40,7 +46,6 @@ knex.select('restaurants.id', 'name', 'cuisine', 'borough', 'grades.id as gradeI
   .limit(10)
   .then(results => {
     
-    // sophisticated approach
     const hydrated = [], lookup = {};
     for (let thing of results) {
       if (!lookup[thing.id]) {

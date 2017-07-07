@@ -1,13 +1,12 @@
 'use strict';
-
-const Treeize = require('treeize');
-const restaurants = new Treeize();
-
-const { DATABASE, PORT } = require('./config');
+const { DATABASE } = require('./config');
 const knex = require('knex')(DATABASE);
 
 // clear the console before each run
-console.log('\x1b\c');
+process.stdout.write('\x1Bc');
+
+const Treeize = require('treeize');
+const restaurants = new Treeize();
 
 knex.select('restaurants.id', 'name', 'cuisine as details:cuisine', 'borough as details:borough', 'grades.id as grades:id', 'grade as grades:grade', 'score as grades:score')
   .from('restaurants')
@@ -15,13 +14,11 @@ knex.select('restaurants.id', 'name', 'cuisine as details:cuisine', 'borough as 
   .orderBy('id', 'asc')
   .limit(2)
   .then(results => {
-    console.log('BEFORE');
-    console.log(JSON.stringify(results, null, 2))
+    console.log('BEFORE', JSON.stringify(results, null, 2));
 
     restaurants.grow(results);
     
-    console.log('AFTER');
-    console.log(JSON.stringify(restaurants.getData(), null, 2));
+    console.log('AFTER', JSON.stringify(restaurants.getData(), null, 2));
   });
 
 // Destroy the connection pool
