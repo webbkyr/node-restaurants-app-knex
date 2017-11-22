@@ -6,19 +6,6 @@ const knex = require('knex')(DATABASE);
 // clear the console before each run
 process.stdout.write('\x1Bc');
 
-// Sample select 
-// 'use strict';
-
-const { DATABASE } = require('./config');
-const knex = require('knex')({
-  client: 'pg',
-  connection: {
-    database: 'dev-restaurants-app'
-  },
-});
-
-// clear the console before each run
-process.stdout.write('\x1Bc');
 
 // Sample select 
 
